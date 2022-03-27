@@ -14,14 +14,7 @@ class Student {
 	private String department;
 	private String college;
 	
-
-	public Student(String rollNo, String name, String emailId, String department, String college) {
-		this.rollNo = rollNo;
-		this.name = name;
-		this.emailId = emailId;
-		this.department = department;
-		this.college = college;
-	}
+	
 
 	public String getrollNo() {
 		return this.rollNo;
@@ -65,95 +58,69 @@ class Student {
 		this.college = college;
 	}
 
-	public void setrollNo() {
-		System.out.println("Enter new ID");
-		String  rollNo = scan.nextLine();
-		this.rollNo = rollNo;
-		
-		
-		
-		
-	}
-
-	public void setName() {
-		System.out.println("Enter new Name");
-		String name = scan.nextLine();
-		this.name = name;
-	}
-
-	public void setEmailID() {
-		System.out.println("Enter new Email-ID");
-		String emailId = scan.nextLine();
-		this.emailId = emailId;
-	}
-
-	public void setDepartment() {
-		System.out.println("Enter new Department");
-		String department = scan.nextLine();
-		this.department = department;
-	}
-
-	public void setCollege() {
-		System.out.println("Enter new College");
-		String college = scan.nextLine();
-		this.college = college;
-	}
-
 }
 
 class StudentDetails {
 	static Scanner scan = new Scanner(System.in);
-	 ArrayList<Student> StudentDet =new ArrayList<Student>();
+	 ArrayList<Student> studentsList =new ArrayList<Student>();
+	 
 	public static void main(String[] args) throws Exception {
 		StudentDetails objectDetails=new StudentDetails();
+		objectDetails.processStart();
 		} 
 	
 public void processStart() {
-		 StudentDet = register();
+		 studentsList.addAll(register()) ;
 		while (true) {
 			System.out.print("Enter any One of below:" + "\n" + "1->Add student details" + "\n" + "2->Get All details"
 					+ "\n" + "3->Get individual details" + "\n" + "4->Edit details" + "\n" + "5->Exit");
-			int n = scan.nextInt();
+			char n = scan.next().charAt(0);
 			switch (n) {
-			case 1 -> StudentDet = register();
-			case 2 -> getAllDetails(StudentDet);
-			case 3 -> getDetails(StudentDet);
-			case 4 -> editDetails(StudentDet);
-			case 5 -> System.exit(0);
+			case '1' -> studentsList.addAll(register()) ;
+			case '2' -> getAllDetails(studentsList);
+			case '3' -> getDetails(studentsList);
+			case '4' -> editDetails(studentsList);
+			case '5' -> System.exit(0);
 			default -> System.err.println("Enter 1 or 2.");
 			}
 		}
 	}
 
 	public  ArrayList<Student> register() {
-		Scanner sc = new Scanner(System.in);
+		
 		System.out.print("How many students to enter :");
-		int n = sc.nextInt();
+		int n = scan.nextInt();
 		ArrayList<Student> register = new ArrayList<>();
 		for (int i = 1; i <= n; i++) {
+			Student studentObject = new Student();
 			System.out.print("Roll no :");
-			String rollNo = "9527151140" + sc.next();
+			String rollNo = "9527151140" + scan.next();
+			studentObject.setrollNo(rollNo);
 			System.out.print("Name :");
-			String name = sc.nextLine();
+			String name = scan.next();
+			studentObject.setName(name);
 			System.out.print("Email ID :");
-			String emailId = sc.next();
+			String emailId = scan.next();
 			emailId = emailId + "@gmail.com";
+			studentObject.setEmailID(emailId);
 			System.out.print("Department :");
-			String department = sc.next();
+			String department = scan.next();
+			studentObject.setDepartment(department);
 			System.out.print("College :");
-			String college = sc.next();
+			String college = scan.next();
+			studentObject.setCollege(college);
 			System.out.println("\n\n");
-			Student studentObject = new Student(rollNo, name, emailId, department, college);
+		
 			register.add(studentObject);
 		}
-		sc.close();
+		
 		return register;
 		
 	}
 
 	public void getAllDetails(ArrayList<Student> student) {
 
-		System.out.print("ALL STUDENT DETAILS ");
+		System.out.println("ALL STUDENT DETAILS ");
 
 		for (Student details : student) {
 			System.out.println("Roll No    : " + details.getrollNo());
@@ -168,13 +135,15 @@ public void processStart() {
 	}
 
 	public  void getDetails(ArrayList<Student> student) {
-		Scanner scanner = new Scanner(System.in);
+		
 		System.out.print("Enter student Roll number : ");
-		String detail = scanner.nextLine();
+		String selectedRollNo = scan.next();
+		selectedRollNo=selectedRollNo.substring(selectedRollNo.length()-2, selectedRollNo.length());
 		for (Student details : student) {
 			String rollNo = details.getrollNo();
+			rollNo=rollNo.substring(rollNo.length()-2, rollNo.length());
 
-			if ( rollNo.equalsIgnoreCase(detail) ) {
+			if ( rollNo.equalsIgnoreCase(selectedRollNo) ) {
 
 				System.out.println("Roll No    : " + details.getrollNo());
 				System.out.println("Name       : " + details.getName());
@@ -185,35 +154,35 @@ public void processStart() {
 
 			}
 
-		}scanner.close();
+		}
 
 	}
 
 	public  void editDetails(ArrayList<Student> student) {
-		Scanner scann = new Scanner(System.in);
-
-		System.out.println("Enter your roll number : ");
-		String changeid = scann.nextLine();
 		
-		for (Student detail : student) {
-			String rollNo = detail.getrollNo();
- 
-			if (rollNo.equalsIgnoreCase(changeid)) {
+		System.out.print("Enter student Roll number : ");
+		String selectedRollNo = scan.next();
+		selectedRollNo=selectedRollNo.substring(selectedRollNo.length()-2, selectedRollNo.length());
+		for (Student details : student) {
+			String rollNo = details.getrollNo();
+			rollNo=rollNo.substring(rollNo.length()-2, rollNo.length());
+
+			if ( rollNo.equalsIgnoreCase(selectedRollNo) ) {
 				System.out.print("Pick anyone below :" + "\n" + "1-->Roll Number" + "\n" + "2-->Name" + "\n"
 						+ "3-->E-mail ID" + "\n" + "4-->Department" + "\n" + "5-->College" + "\n" + "6-->Exit");
-				int n = scann.nextInt();
+				int n = scan.nextInt();
 				switch (n) {
 				case 1 -> {
 					System.out.println("Enter your new roll number : ");
-					detail.setrollNo();}
+					details.setrollNo(scan.next());}
 				case 2 ->{System.out.println("Enter your new name number : ");
-					detail.setName();}
+					details.setName(scan.next());}
 				case 3 ->{System.out.println("Enter your new email Id number : ");
-				detail.setEmailID();} 
+				details.setEmailID(scan.next());} 
 				case 4 ->{System.out.println("Enter your new department number : ");
-				  detail.setDepartment();}
+				  details.setDepartment(scan.next());}
 				case 5 ->{System.out.println("Enter your new college number : ");
-				detail.setCollege();} 
+				details.setCollege(scan.next());} 
 				case 6 -> System.exit(0);
 				default -> System.err.println("Enter valid input");
 
@@ -221,7 +190,7 @@ public void processStart() {
 
 			}
 
-		}scann .close();
+		}
 	}
 
 }
